@@ -11,8 +11,11 @@ using UnityEngine.SceneManagement;
 // Ajouter bruitage (mort, win) v
 // score v
 // Fix score qui tremble v
-// Pause + affichage score quand mort
 // refacto
+// fix le score
+// Ajouter le son de mort quand on prend un degat
+// Pause + affichage score quand mort
+// ajouter joystick mobile
 // GAMEPLAY : DEVENIR PETIT POUR PASSER DES OBSTACLES
 
 public class Player : MonoBehaviour
