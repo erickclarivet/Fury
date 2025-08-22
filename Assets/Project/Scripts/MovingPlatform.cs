@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,18 +9,13 @@ enum PlatformDirection
 
 public class MovingPlatform : MonoBehaviour
 {
-    [SerializeField] private GameObject _platform;
-    [SerializeField] private List<Transform> _waypoints;
-    [SerializeField] private bool _changeDirection = false;
-    [SerializeField] private float _speed = 2f; 
+    [SerializeField] GameObject _platform;
+    [SerializeField] List<Transform> _waypoints;
+    [SerializeField] bool _changeDirection = false;
+    [SerializeField] float _speed = 2f; 
 
-    private int _currentWaypointIndex = 1;
-    private PlatformDirection _direction = PlatformDirection.Forward;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
+    int _currentWaypointIndex = 1;
+    PlatformDirection _direction = PlatformDirection.Forward;
 
     // Update is called once per frame
     void Update()
@@ -67,7 +61,7 @@ public class MovingPlatform : MonoBehaviour
         _platform.transform.localPosition = Vector2.MoveTowards(_platform.transform.localPosition, targetPosition, _speed * Time.fixedDeltaTime);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
@@ -75,7 +69,7 @@ public class MovingPlatform : MonoBehaviour
         }
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {

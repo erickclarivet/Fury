@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class SettingsMenuUI : MonoBehaviour
 {
-    [SerializeField] private GameObject _mainMenuUI;
+    [SerializeField] GameObject _mainMenuUI;
 
     // Start is called before the first frame update
     public void BackToMenu()

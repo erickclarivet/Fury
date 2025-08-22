@@ -7,13 +7,13 @@ using UnityEngine.UI;
 
 public class HealthBarController : MonoBehaviour
 {
-    private GameObject[] heartContainers;
-    private Image[] heartFills;
+    GameObject[] heartContainers;
+    Image[] heartFills;
 
     public Transform heartsParent;
     public GameObject heartContainerPrefab;
 
-    private void Start()
+    void Start()
     {
         // Should I use lists? Maybe :)
         heartContainers = new GameObject[(int)PlayerStats.Instance.MaxTotalHealth];
