@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class WinDoor : MonoBehaviour
 {
-    [SerializeField] private GameObject _winUI;
-    [SerializeField] private AudioClip  _winAudio;
-    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] GameObject _winUI;
+    [SerializeField] AudioClip  _winAudio;
+    [SerializeField] AudioSource _audioSource;
 
     // Start is called before the first frame update
-    private void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {

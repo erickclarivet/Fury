@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 // if osbtacle (hole, wall) going back
@@ -11,13 +9,13 @@ enum MovementDirection
 
 public class Enemy : MonoBehaviour
 {
-    private Rigidbody2D _rb;
-    private LayerMask _groundLayer;
-    private Transform _groundCheck;
+    Rigidbody2D _rb;
+    LayerMask _groundLayer;
+    Transform _groundCheck;
 
-    [SerializeField] private float _moveSpeed;
-    [SerializeField] private float _groundRadius;
-    [SerializeField] private MovementDirection _direction = MovementDirection.Right;
+    [SerializeField] float _moveSpeed;
+    [SerializeField] float _groundRadius;
+    [SerializeField] MovementDirection _direction = MovementDirection.Right;
 
     // Start is called before the first frame update
     void Start()
@@ -37,7 +35,7 @@ public class Enemy : MonoBehaviour
     {
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         if (_direction == MovementDirection.Right)
             _rb.velocity = new Vector2(-_moveSpeed, _rb.velocity.y);
@@ -59,7 +57,15 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private bool IsGrounded()
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.transform.CompareTag("Player"))
+        {
+            collision.transform.GetComponent<Player>().TakeDamage(1);
+        }
+    }
+
+    bool IsGrounded()
     {
         return Physics2D.OverlapCircle(_groundCheck.position, _groundRadius, _groundLayer) != null;
     }

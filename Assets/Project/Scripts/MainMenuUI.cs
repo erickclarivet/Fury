@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MainMenuUI : MonoBehaviour
 {
-    [SerializeField] public GameObject _settingsMenuUI;
+    [SerializeField] GameObject _settingsMenuUI;
 
     public void Quit()
     {

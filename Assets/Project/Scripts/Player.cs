@@ -1,61 +1,50 @@
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-// mettre la mort quand ca atteint tombe dans le vide ! v
-// Ajouter 1 niveau v
-// Ajouter Music v
-// Best sprite handling v
-// Ajouter bruitage (mort, win) v
-// score v
-// Fix score qui tremble v
-// refacto
-// fix le score
-// Ajouter le son de mort quand on prend un degat
-// Pause + affichage score quand mort
-// ajouter joystick mobile
-// meilleur facon de creer des levels (outils?) + en xml ?
-// GAMEPLAY : DEVENIR PETIT POUR PASSER DES OBSTACLES
-
 public class Player : MonoBehaviour
 {
-    private Rigidbody2D _rb;
-    private float _moveX;
-    private bool _isJumping;
-    private bool _isCrouching;
-    private bool _isGrounded;
-    private LayerMask _groundLayer;
-    private Transform _groundCheck;
-    [SerializeField] private AudioSource _audioSource;
-    [SerializeField] private AudioClip _jumpClip;
-    [SerializeField] private AudioClip _deathClip;
+    public event Action<int> OnTakeDamage;
 
-    [SerializeField] private int _score;
-    [SerializeField] private int _life;
-    [SerializeField] private Animator _animator;
-    [SerializeField] private float _jumpForce;
-    [SerializeField] private float _moveSpeed;
+    Rigidbody2D _rb;
+    float _moveX;
+    bool _isJumping;
+    bool _isCrouching;
+    bool _isGrounded;
+    LayerMask _groundLayer;
+    Transform _groundCheck;
+    Transform _ceillingCheck;
+    bool _isAlive = true;
 
-    [SerializeField] private float _groundRadius = 0.05f;
-    [SerializeField] private Life _lifeScript;
-    [SerializeField] private Score _scoreScript;
+    [SerializeField] float _jumpForce = 5.5f;
+    [SerializeField] float _moveSpeed = 5f;
+    [SerializeField] float _groundRadius = 0.08f;
+    [SerializeField] AudioSource _audioSource;
+    [SerializeField] AudioClip _jumpClip;
+    [SerializeField] AudioClip _hitClip;
+    [SerializeField] Animator _animator;
+
+    public void Initiate(Vector3 position, float jumpForce, float moveSpeed)
+    {
+        gameObject.transform.position = position;
+        _moveSpeed = moveSpeed;
+        _jumpForce = jumpForce;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        this._rb = this.GetComponent<Rigidbody2D>();
-        this._animator = this.GetComponent<Animator>();
-        this._groundCheck = this.transform.Find("GroundCheck");
-        this._groundLayer = LayerMask.GetMask("Ground");
+        _rb = this.GetComponent<Rigidbody2D>();
+        _animator = this.GetComponent<Animator>();
+        _groundCheck = this.transform.Find("GroundCheck");
+        _ceillingCheck = this.transform.Find("CeillingCheck");
+        _groundLayer = LayerMask.GetMask("Ground");
 
         // More fluid movement
         _rb.interpolation = RigidbodyInterpolation2D.Interpolate;
         _rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
         _rb.freezeRotation = true;
-        _life = _lifeScript.InitLife(4);
-        _score = _scoreScript.UpdateScore();
     }
 
     // Update is called once per frame
@@ -63,7 +52,17 @@ public class Player : MonoBehaviour
     {
         _moveX = Input.GetAxis("Horizontal");
         _isJumping = Input.GetKey(KeyCode.Space);
-        _isCrouching = Input.GetKey(KeyCode.DownArrow);
+        var isCrouching = Input.GetKey(KeyCode.DownArrow);
+       if (isCrouching || (!isCrouching && _isCrouching && IsTouchCeilling()))
+        {
+            _rb.transform.GetComponent<CircleCollider2D>().isTrigger = true;
+            _isCrouching = true;
+        }
+       else
+        {
+            _rb.transform.GetComponent<CircleCollider2D>().isTrigger = false;
+            _isCrouching = false;
+        }
         Vector3 scale = this._rb.transform.localScale;
         if (_moveX > 0) // Face right
             this._rb.transform.localScale = new Vector3(Mathf.Abs(scale.x), scale.y, scale.z);
@@ -71,55 +70,55 @@ public class Player : MonoBehaviour
             this._rb.transform.localScale = new Vector3(-Mathf.Abs(scale.x), scale.y, scale.z);
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         _isGrounded = IsGrounded();
         _rb.velocity = new Vector2(_moveX * _moveSpeed, _rb.velocity.y);
         if (_isGrounded && _rb.velocity.y < 0f)
-            _rb.velocity = new Vector2(_rb.velocity.x, -2f); // une petite valeur négative stable
+            _rb.velocity = new Vector2(_rb.velocity.x, -2f); // negative value to be sure to touch the ground
         if (_isGrounded && _isJumping)
             Jump();
         SetAnimation();
     }
 
-    private void Jump()
+    void Jump()
     {
         _rb.velocity = new Vector2(_rb.velocity.x, _jumpForce);
         _audioSource.PlayOneShot(_jumpClip);
     }
 
-    private bool IsGrounded()
+    bool IsGrounded()
     {
         return Physics2D.OverlapCircle(_groundCheck.position, _groundRadius, _groundLayer) != null;
     }
 
-    private void SetAnimation()
+    bool IsTouchCeilling()
     {
-        this._animator.SetBool("isGrounded", this._isGrounded);
-        this._animator.SetBool("isCrouching", this._isCrouching);
-        this._animator.SetBool("isJumping", this._isJumping);
-        this._animator.SetFloat("moveX", Math.Abs(this._moveX));
-        this._animator.SetFloat("velocityY", this._rb.velocity.y);
-        this._animator.SetInteger("life", this._life);
+        return Physics2D.OverlapCircle(_ceillingCheck.position, _groundRadius, _groundLayer) != null;
     }
 
-    public void OnCollisionEnter2D(Collision2D collision)
+    void SetAnimation()
     {
-        if (collision.gameObject.CompareTag("Damage"))
-        {
-            _rb.velocity = new Vector2(_rb.velocity.x, _jumpForce);
-            StartCoroutine(BlinkRed());
-            if (_life == 0)
-            {
-                Killed();
-            }
-        }
+        this._animator.SetBool("isGrounded", _isGrounded);
+        this._animator.SetBool("isCrouching", _isCrouching);
+        this._animator.SetBool("isJumping", _isJumping);
+        this._animator.SetFloat("moveX", Math.Abs(_moveX));
+        this._animator.SetFloat("velocityY", _rb.velocity.y);
+        this._animator.SetBool("isAlive", _isAlive);
+    }
+
+
+    public void TakeDamage(int hit)
+    {
+        _rb.velocity = new Vector2(-_rb.velocity.x, _jumpForce);
+        OnTakeDamage?.Invoke(hit);
+        StartCoroutine(BlinkRed());
     }
 
     public IEnumerator BlinkRed()
     {
+        _audioSource.PlayOneShot(_hitClip);
         this.GetComponent<SpriteRenderer>().color = Color.red; // Set color to red
-        _life = this._lifeScript.LooseHeart();
         yield return new WaitForSeconds(0.1f);
         this.GetComponent<SpriteRenderer>().color = Color.white; // Reset color to white
     }
@@ -132,18 +131,13 @@ public class Player : MonoBehaviour
 
     public IEnumerator Death()
     {
-        this._life = 0;
+        _isAlive = false;
         Debug.Log("Player is dead!");
-        _audioSource.PlayOneShot(_deathClip);
+        _audioSource.PlayOneShot(_hitClip);
         GetComponent<CapsuleCollider2D>().isTrigger = true; // Disable collision
         this.GetComponent<SpriteRenderer>().color = Color.red; // Set color to red
         yield return new WaitForSeconds(2f);
         SceneManager.LoadScene("GameScene");
-    }
-
-    public void AddPoints(int points)
-    {
-        _score = this._scoreScript.UpdateScore(points);
     }
 
     // DEBUG

@@ -5,24 +5,23 @@ using UnityEngine;
 
 public class Score : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _scoreText;
-    [SerializeField] private int _score;
+    TextMeshProUGUI _scoreText;
+    int _score = 0;
+    
     // Start is called before the first frame update
     void Start()
     {
-        UpdateScore();
+        _scoreText = GetComponent<TextMeshProUGUI>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public int UpdateScore(int score = 0)
+    public void UpdateScore(int score = 0)
     {
         _score += score;
         _scoreText.text = $"Score : {_score}";
+    }
+
+    public int GetScore()
+    {
         return _score;
     }
 }

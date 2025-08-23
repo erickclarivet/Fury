@@ -1,36 +1,25 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Collectible : MonoBehaviour
 {
-    [SerializeField] private GameObject _collectible;
-    [SerializeField] private int _points = 10;
-    [SerializeField] private AudioClip _collectSound;
-    [SerializeField] private AudioSource _collectSource;
+    [SerializeField] int _points = 10;
+    [SerializeField] AudioClip _collectSound;
+    [SerializeField] AudioSource _collectSource;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    public event Action<int> OnAddPoints;
+    public event Action<Collectible> OnDestroyCollectible;
     public int GetPoints()
     {
         return _points;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<Player>().AddPoints(_points);
+            OnAddPoints?.Invoke(_points);
             StartCoroutine(LaunchSound());
         }
     }
@@ -42,6 +31,11 @@ public class Collectible : MonoBehaviour
         GetComponent<Collider2D>().enabled = false;
         yield return new WaitForSeconds(1f);
         Destroy(gameObject);
+    }
+
+    void OnDestroy()
+    {
+        OnDestroyCollectible?.Invoke(GetComponent<Collectible>());
     }
 
 }

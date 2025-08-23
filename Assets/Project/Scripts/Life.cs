@@ -1,21 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Life : MonoBehaviour
 {
-    [SerializeField] private int _life = 4;
-    [SerializeField] private GameObject _heartFullPrefab;
-    [SerializeField] private List<Transform> _hearts;
-    [SerializeField] private Sprite _emptyHeart;
+    int _life = 4;
+    List<Transform> _hearts;
+    [SerializeField] GameObject _heartFullPrefab;
+    [SerializeField] Sprite _emptyHeart;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    public int InitLife(int life)
+    public int Instantiate(int life)
     {
         Vector3 position = new Vector3(0, 0, 0);
         _hearts = new List<Transform>();
@@ -30,16 +25,28 @@ public class Life : MonoBehaviour
         return _life;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void LooseHeart(int hit)
     {
-        
+        if (hit == -1)
+            hit = _life;
+        for (int i = 0; i < hit && _life >= 0; i++)
+        {
+            StartCoroutine(BlinkRed());
+            _life--;
+        }
     }
 
-    public int LooseHeart()
+    public IEnumerator BlinkRed()
     {
-       _hearts[_life - 1].GetComponent<SpriteRenderer>().sprite = _emptyHeart;
-       _life--;
-        return _life;
+        var spriteRenderer = _hearts[_life - 1].GetComponent<SpriteRenderer>();
+        spriteRenderer.color = Color.red;
+        yield return new WaitForSeconds(0.1f);
+        spriteRenderer.sprite = _emptyHeart;
+        spriteRenderer.color = Color.white;
+    }
+
+    public bool IsAlive()
+    {
+        return _life == 0;
     }
 }

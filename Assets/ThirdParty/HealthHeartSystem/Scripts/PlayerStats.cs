@@ -10,7 +10,7 @@ public class PlayerStats : MonoBehaviour
     public OnHealthChangedDelegate onHealthChangedCallback;
 
     #region Sigleton
-    private static PlayerStats instance;
+    static PlayerStats instance;
     public static PlayerStats Instance
     {
         get
@@ -23,11 +23,11 @@ public class PlayerStats : MonoBehaviour
     #endregion
 
     [SerializeField]
-    private float health;
+    float health;
     [SerializeField]
-    private float maxHealth;
+    float maxHealth;
     [SerializeField]
-    private float maxTotalHealth;
+    float maxTotalHealth;
 
     public float Health { get { return health; } }
     public float MaxHealth { get { return maxHealth; } }
