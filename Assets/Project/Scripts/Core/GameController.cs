@@ -11,18 +11,19 @@ using UnityEngine;
 // Ajouter bruitage (mort, win) v
 // score v
 // Fix score qui tremble v
-// refacto => en cours
 // fix le score v
 // Ajouter le son de mort quand on prend un degat v
+// Ajouter passages secrets v
 // COMPRENDRE POURQUOI CHUTE INFINIE SUR PLATFORM VERTICALE (IS GROUNDED FALSE ??) fixed v
 // COMPRENDRE POURQUOI PEUT PAS SAUTER SI PLATFORM MONTE fixed v
-// Pause (resume/retour menu)
-// Affichage score quand mort (score, replay, menu)
-// ajouter joystick mobile
-// GAMEPLAY : DEVENIR PETIT POUR PASSER DES OBSTACLES =>
-// meilleur facon de creer des levels (outils?) + en xml ?
+// Pause (resume/retour menu) v
+// Affichage score quand mort (score, replay, menu) v
+// Gameplay couché v 
+// ajouter joystick mobile => selectionner depuis le menu de faire un mode mobile ?
+// GAMEPLAY : DEVENIR PETIT POUR PASSER DES OBSTACLES => NOPE
+// meilleur facon de creer des levels (outils?) + en xml ??
 // CONTINUE REFACTO => TOUT DOIT ETRE PREFAB
-// MOVING PLATFORM & MOVING ENEMIES
+// MOVING PLATFORM & MOVING ENEMIES ??
 
 
 public class GameController : MonoBehaviour
@@ -75,15 +76,21 @@ public class GameController : MonoBehaviour
     {
         _collectibles = new List<GameObject>();
         var positions = new List<Vector3> {
+            new Vector3(-28.5f, 13f, 0), // -> secret
+            new Vector3(-27.5f, 13f, 0), // -> secret
+            new Vector3(-26.5f, 13f, 0), // -> secret
             new Vector3(-9.5f, 5f, 0),
             new Vector3(22f, 5f, 0),
             new Vector3(62f, 5f, 0),
+            new Vector3(12f, -2f, 0), // -> secret
             new Vector3(103f, 0, 0),
             new Vector3(113f, 1f, 0),
             new Vector3(133f, 5f, 0),
             new Vector3(137f, 12f, 0),
             new Vector3(123.5f, 5f, 0),
-            new Vector3(137f, 12f, 0),
+            new Vector3(126.5f, -5f, 0), // -> secret
+            new Vector3(146.5f, 8f, 0), // -> secret
+            new Vector3(147.5f, -2f, 0), // -> secret
             new Vector3(190f, 12f, 0)
         };
         foreach (var position in positions)

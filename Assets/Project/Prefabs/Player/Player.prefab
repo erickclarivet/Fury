@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2138043875192576666}
   - component: {fileID: 7571472549241587042}
   - component: {fileID: 5737216726604724756}
+  - component: {fileID: 1385554023809576652}
   - component: {fileID: 5757009584551926972}
   m_Layer: 0
   m_Name: Player
@@ -35,6 +36,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 7311760133860263773}
   - {fileID: 6336341797580900982}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -104,7 +106,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _jumpForce: 5.5
   _moveSpeed: 5
-  _groundRadius: 0.1
+  _groundRadius: 0.15
   _audioSource: {fileID: 5757009584551926972}
   _jumpClip: {fileID: 8300000, guid: 7108e8b406977d342bed74fa4539f8f5, type: 3}
   _hitClip: {fileID: 8300000, guid: 25b2b7e8227140641aaf7069a5fac951, type: 3}
@@ -189,9 +191,44 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.03939098, y: -0.38953257}
-  m_Size: {x: 0.8107439, y: 1.1433785}
+  m_Offset: {x: 0.03939098, y: -0.5747967}
+  m_Size: {x: 0.8107439, y: 0.8486376}
   m_Direction: 0
+--- !u!58 &1385554023809576652
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 399210328036038650}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.07}
+  serializedVersion: 2
+  m_Radius: 0.2
 --- !u!82 &5757009584551926972
 AudioSource:
   m_ObjectHideFlags: 0
@@ -288,6 +325,37 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &1538052605723409459
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7311760133860263773}
+  m_Layer: 0
+  m_Name: CeillingCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7311760133860263773
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1538052605723409459}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.08, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6468320907673947465}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3285808537411809865
 GameObject:
   m_ObjectHideFlags: 0

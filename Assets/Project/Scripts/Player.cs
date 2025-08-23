@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     bool _isGrounded;
     LayerMask _groundLayer;
     Transform _groundCheck;
+    Transform _ceillingCheck;
     bool _isAlive = true;
 
     [SerializeField] float _jumpForce = 5.5f;
@@ -37,6 +38,7 @@ public class Player : MonoBehaviour
         _rb = this.GetComponent<Rigidbody2D>();
         _animator = this.GetComponent<Animator>();
         _groundCheck = this.transform.Find("GroundCheck");
+        _ceillingCheck = this.transform.Find("CeillingCheck");
         _groundLayer = LayerMask.GetMask("Ground");
 
         // More fluid movement
@@ -50,7 +52,17 @@ public class Player : MonoBehaviour
     {
         _moveX = Input.GetAxis("Horizontal");
         _isJumping = Input.GetKey(KeyCode.Space);
-        _isCrouching = Input.GetKey(KeyCode.DownArrow);
+        var isCrouching = Input.GetKey(KeyCode.DownArrow);
+       if (isCrouching || (!isCrouching && _isCrouching && IsTouchCeilling()))
+        {
+            _rb.transform.GetComponent<CircleCollider2D>().isTrigger = true;
+            _isCrouching = true;
+        }
+       else
+        {
+            _rb.transform.GetComponent<CircleCollider2D>().isTrigger = false;
+            _isCrouching = false;
+        }
         Vector3 scale = this._rb.transform.localScale;
         if (_moveX > 0) // Face right
             this._rb.transform.localScale = new Vector3(Mathf.Abs(scale.x), scale.y, scale.z);
@@ -78,6 +90,11 @@ public class Player : MonoBehaviour
     bool IsGrounded()
     {
         return Physics2D.OverlapCircle(_groundCheck.position, _groundRadius, _groundLayer) != null;
+    }
+
+    bool IsTouchCeilling()
+    {
+        return Physics2D.OverlapCircle(_ceillingCheck.position, _groundRadius, _groundLayer) != null;
     }
 
     void SetAnimation()
