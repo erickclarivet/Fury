@@ -19,7 +19,9 @@ using UnityEngine;
 // Pause (resume/retour menu) v
 // Affichage score quand mort (score, replay, menu) v
 // Gameplay couché v 
-// ajouter joystick mobile => selectionner depuis le menu de faire un mode mobile ?
+// ajouter joystick mobile => selectionner depuis le menu de faire un mode mobile ? => en cours (desactiver l'un ou lautre)
+// Ajouter pause avec echap ou p
+// fix score mal affiché
 // GAMEPLAY : DEVENIR PETIT POUR PASSER DES OBSTACLES => NOPE
 // meilleur facon de creer des levels (outils?) + en xml ??
 // CONTINUE REFACTO => TOUT DOIT ETRE PREFAB
@@ -57,11 +59,21 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        InitiatePlayerInput();
         InitiatePlayer();
         _vcam.Follow = _playerGO.transform;
         InitiateScore();
         InitiateLife();
         InitiateCollectibles();
+    }
+
+    private void InitiatePlayerInput()
+    {
+        var playerInput = PlayerPrefs.GetString("PlayerInput", "MoveKeyboard");
+        if (playerInput == "MoveKeyboard")
+        {
+            GameObject.Find("Gamepad").SetActive(false);
+        }
     }
 
     void InitiatePlayer()
@@ -145,18 +157,18 @@ public class GameController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            if (_pauseUI.activeSelf)
-            {
-                _pauseUI.SetActive(false);
-                Time.timeScale = 1.0f;
-            }
-            else
-            {
-                _pauseUI.SetActive(true);
-                Time.timeScale = 0f;
-            }
-        }
+        //if (Input.GetKeyDown(KeyCode.P))
+        //{
+        //    if (_pauseUI.activeSelf)
+        //    {
+        //        _pauseUI.SetActive(false);
+        //        Time.timeScale = 1.0f;
+        //    }
+        //    else
+        //    {
+        //        _pauseUI.SetActive(true);
+        //        Time.timeScale = 0f;
+        //    }
+        //}
     }
 }

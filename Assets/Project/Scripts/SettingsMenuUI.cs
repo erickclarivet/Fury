@@ -13,4 +13,19 @@ public class SettingsMenuUI : MonoBehaviour
         gameObject.SetActive(false);
         _mainMenuUI.SetActive(true);
     }
+
+    public void RunWithKeyboard()
+    {
+        PlayerPrefs.SetString("PlayerInput", "MoveKeyboard");
+        PlayerPrefs.Save();
+        SceneManager.LoadScene("GameScene");
+    }
+
+    public void RunWithGamePad()
+    {
+        PlayerPrefs.SetString("PlayerInput", "MoveGamepad");
+        PlayerPrefs.Save();
+        SceneManager.LoadScene("GameScene");
+    }
+
 }

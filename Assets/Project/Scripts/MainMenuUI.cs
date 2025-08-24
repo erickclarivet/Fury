@@ -12,12 +12,12 @@ public class MainMenuUI : MonoBehaviour
 
     public void Play()
     {
-        SceneManager.LoadScene("GameScene");
+        gameObject.SetActive(false);
+        _settingsMenuUI.SetActive(true);
     }
 
     public void Settings()
     {
-        gameObject.SetActive(false);
-        _settingsMenuUI.SetActive(true);
+
     }
 }
