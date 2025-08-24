@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 5737216726604724756}
   - component: {fileID: 1385554023809576652}
   - component: {fileID: 5757009584551926972}
+  - component: {fileID: -3572290426835239374}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -111,6 +112,15 @@ MonoBehaviour:
   _jumpClip: {fileID: 8300000, guid: 7108e8b406977d342bed74fa4539f8f5, type: 3}
   _hitClip: {fileID: 8300000, guid: 25b2b7e8227140641aaf7069a5fac951, type: 3}
   _animator: {fileID: 7571472549241587042}
+  gameplay:
+    m_Name: Gameplay
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 301696b7-9e1e-4f04-a078-f0635ac2f94f
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
 --- !u!50 &2138043875192576666
 Rigidbody2D:
   serializedVersion: 4
@@ -325,6 +335,36 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-3572290426835239374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 399210328036038650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 3fedfaef175a42b49a860b243555f082, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: gameplay
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &1538052605723409459
 GameObject:
   m_ObjectHideFlags: 0

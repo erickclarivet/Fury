@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
@@ -25,6 +27,11 @@ public class Player : MonoBehaviour
     [SerializeField] AudioClip _hitClip;
     [SerializeField] Animator _animator;
 
+    [Header("InputManagement")]
+    [SerializeField] PlayerInput _playerInput;
+    private InputAction _moveAction;
+    private InputAction _jumpAction;
+
     public void Initiate(Vector3 position, float jumpForce, float moveSpeed)
     {
         gameObject.transform.position = position;
@@ -35,6 +42,10 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        var savedMoveAction = PlayerPrefs.GetString("PlayerInput", "MoveKeyboard");
+        _playerInput = GetComponent<PlayerInput>();
+        _moveAction = _playerInput.actions[savedMoveAction];
+        _jumpAction = _playerInput.actions["Jump"];
         _rb = this.GetComponent<Rigidbody2D>();
         _animator = this.GetComponent<Animator>();
         _groundCheck = this.transform.Find("GroundCheck");
@@ -47,18 +58,38 @@ public class Player : MonoBehaviour
         _rb.freezeRotation = true;
     }
 
+    private void OnEnable()
+    {
+        _jumpAction.Enable();
+        _moveAction.Enable();
+    }
+
     // Update is called once per frame
     void Update()
     {
-        _moveX = Input.GetAxis("Horizontal");
-        _isJumping = Input.GetKey(KeyCode.Space);
-        var isCrouching = Input.GetKey(KeyCode.DownArrow);
-       if (isCrouching || (!isCrouching && _isCrouching && IsTouchCeilling()))
+        // Get action value
+        Vector2 move = _moveAction.ReadValue<Vector2>();
+        _isJumping = _jumpAction.IsPressed();
+        float x = move.x;
+
+        // Exemple de détection gauche/droite (seuil utile pour le stick)
+        const float dead = 0.2f;
+        bool left = x < -dead;
+        bool right = x > dead;
+        _moveX = x;
+        var isCrouching = move.y < 0;
+
+
+        Debug.Log($"x:{move.x}|y:{move.y}");
+        //_moveX = Input.GetAxis("Horizontal");
+        //_isJumping = Input.GetKey(KeyCode.Space);
+        // var isCrouching = Input.GetKey(KeyCode.DownArrow);
+        if (isCrouching || (!isCrouching && _isCrouching && IsTouchCeilling()))
         {
             _rb.transform.GetComponent<CircleCollider2D>().isTrigger = true;
             _isCrouching = true;
         }
-       else
+        else
         {
             _rb.transform.GetComponent<CircleCollider2D>().isTrigger = false;
             _isCrouching = false;
@@ -80,6 +111,12 @@ public class Player : MonoBehaviour
             Jump();
         SetAnimation();
     }
+    private void OnDisable()
+    {
+        _jumpAction.Disable();
+        _moveAction.Disable();
+    }
+
 
     void Jump()
     {
