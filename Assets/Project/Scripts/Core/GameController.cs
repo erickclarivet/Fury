@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 // mettre la mort quand ca atteint tombe dans le vide ! v
 // Ajouter 1 niveau v
@@ -55,10 +56,19 @@ public class GameController : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera _vcam;
 
     [SerializeField] GameObject _pauseUI;
+    PlayerInput _playerInput;
+    InputAction _pauseAction;
+
+    private void Awake()
+    {
+        _playerInput = GetComponent<PlayerInput>();
+        _pauseAction = _playerInput.actions["Pause"];
+    }
 
     // Start is called before the first frame update
     void Start()
     {
+
         InitiatePlayerInput();
         InitiatePlayer();
         _vcam.Follow = _playerGO.transform;
@@ -67,7 +77,34 @@ public class GameController : MonoBehaviour
         InitiateCollectibles();
     }
 
-    private void InitiatePlayerInput()
+    private void OnEnable()
+    {
+        _pauseAction.Enable();
+        _pauseAction.performed += OnPausePressed;
+    }
+
+    public void OnPausePressed(InputAction.CallbackContext context)
+    {
+        if (_pauseUI.activeSelf)
+        {
+            _pauseUI.SetActive(false);
+            Time.timeScale = 1.0f;
+        }
+        else
+        {
+            _pauseUI.SetActive(true);
+            Time.timeScale = 0f;
+        }
+    }
+
+    private void OnDisable()
+    {
+        _pauseAction.performed -= OnPausePressed;
+        _pauseAction.Disable();
+    }
+
+
+    void InitiatePlayerInput()
     {
         var playerInput = PlayerPrefs.GetString("PlayerInput", "MoveKeyboard");
         if (playerInput == "MoveKeyboard")
@@ -128,9 +165,9 @@ public class GameController : MonoBehaviour
     void InitiateScore()
     {
         _scoreGO = Instantiate<GameObject>(_scorePrefab);
-        _scoreGO.transform.SetParent(_scoreParent);
+        _scoreGO.transform.SetParent(_lifeParent);
         _scoreGO.transform.localScale = new Vector3(1, 1, 1);
-        _scoreGO.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(275, -75, 0);
+        _scoreGO.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(280, -70, 0);
     }
 
     public void HandleAddPoints(int points)
@@ -153,22 +190,5 @@ public class GameController : MonoBehaviour
             _playerGO.GetComponent<Player>().OnTakeDamage -= HandlePlayerTakeDamage;
             _playerGO.GetComponent<Player>().Killed();
         }
-    }
-
-    void Update()
-    {
-        //if (Input.GetKeyDown(KeyCode.P))
-        //{
-        //    if (_pauseUI.activeSelf)
-        //    {
-        //        _pauseUI.SetActive(false);
-        //        Time.timeScale = 1.0f;
-        //    }
-        //    else
-        //    {
-        //        _pauseUI.SetActive(true);
-        //        Time.timeScale = 0f;
-        //    }
-        //}
     }
 }

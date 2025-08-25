@@ -112,15 +112,6 @@ MonoBehaviour:
   _jumpClip: {fileID: 8300000, guid: 7108e8b406977d342bed74fa4539f8f5, type: 3}
   _hitClip: {fileID: 8300000, guid: 25b2b7e8227140641aaf7069a5fac951, type: 3}
   _animator: {fileID: 7571472549241587042}
-  gameplay:
-    m_Name: Gameplay
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 301696b7-9e1e-4f04-a078-f0635ac2f94f
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
 --- !u!50 &2138043875192576666
 Rigidbody2D:
   serializedVersion: 4

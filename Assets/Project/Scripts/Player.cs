@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
     [SerializeField] Animator _animator;
 
     [Header("InputManagement")]
-    [SerializeField] PlayerInput _playerInput;
+    PlayerInput _playerInput;
     private InputAction _moveAction;
     private InputAction _jumpAction;
 
@@ -39,13 +39,17 @@ public class Player : MonoBehaviour
         _jumpForce = jumpForce;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         var savedMoveAction = PlayerPrefs.GetString("PlayerInput", "MoveKeyboard");
         _playerInput = GetComponent<PlayerInput>();
         _moveAction = _playerInput.actions[savedMoveAction];
         _jumpAction = _playerInput.actions["Jump"];
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
         _rb = this.GetComponent<Rigidbody2D>();
         _animator = this.GetComponent<Animator>();
         _groundCheck = this.transform.Find("GroundCheck");
