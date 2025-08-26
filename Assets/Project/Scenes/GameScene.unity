@@ -312,7 +312,7 @@ MonoBehaviour:
   _scoreParent: {fileID: 473798395}
   _scorePrefab: {fileID: 6383399936203582995, guid: 6e2bf1b49f09c254fa35ce1588fcfceb, type: 3}
   _lifeParent: {fileID: 622704071}
-  _lifePrefab: {fileID: 7984252769712627153, guid: 229ed21158f52344d8b6ae1324e3259d, type: 3}
+  _lifePrefab: {fileID: 350969646072552035, guid: fb9b0b3cdf7021e47ad7ea172ee567a9, type: 3}
   _life: 3
   _collectibleParent: {fileID: 232108787}
   _collectiblePrefab: {fileID: 2540883070676235495, guid: b8b91a10635aef449a5a2bd8a251475b, type: 3}
@@ -6054,8 +6054,8 @@ MonoBehaviour:
   m_RefResolutionY: 180
   m_UpscaleRT: 1
   m_PixelSnapping: 1
-  m_CropFrameX: 1
-  m_CropFrameY: 1
+  m_CropFrameX: 0
+  m_CropFrameY: 0
   m_StretchFill: 0
 --- !u!82 &519420035
 AudioSource:

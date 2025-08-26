@@ -156,8 +156,8 @@ public class GameController : MonoBehaviour
     void InitiateLife()
     {
         _lifeGO = Instantiate<GameObject>(_lifePrefab);
-        _lifeGO.transform.SetParent(_lifeParent);
-        _lifeGO.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(50, -40, 0);
+        _lifeGO.transform.SetParent(_scoreParent);
+        _lifeGO.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(200, -30, 0);
         _lifeGO.transform.localScale = new Vector3(1, 1, 1);
         _lifeGO.GetComponent<Life>().Instantiate(_life);
     }
@@ -165,9 +165,9 @@ public class GameController : MonoBehaviour
     void InitiateScore()
     {
         _scoreGO = Instantiate<GameObject>(_scorePrefab);
-        _scoreGO.transform.SetParent(_lifeParent);
+        _scoreGO.transform.SetParent(_scoreParent);
         _scoreGO.transform.localScale = new Vector3(1, 1, 1);
-        _scoreGO.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(280, -70, 0);
+        _scoreGO.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(270, -45, 0);
     }
 
     public void HandleAddPoints(int points)
