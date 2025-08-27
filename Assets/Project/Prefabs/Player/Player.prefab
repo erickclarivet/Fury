@@ -112,6 +112,8 @@ MonoBehaviour:
   _jumpClip: {fileID: 8300000, guid: 7108e8b406977d342bed74fa4539f8f5, type: 3}
   _hitClip: {fileID: 8300000, guid: 25b2b7e8227140641aaf7069a5fac951, type: 3}
   _animator: {fileID: 7571472549241587042}
+  _groundCheck: {fileID: 6336341797580900982}
+  _ceillingCheck: {fileID: 7311760133860263773}
 --- !u!50 &2138043875192576666
 Rigidbody2D:
   serializedVersion: 4

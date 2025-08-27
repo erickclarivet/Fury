@@ -32,30 +32,35 @@ using UnityEngine.InputSystem;
 public class GameController : MonoBehaviour
 {
     [Header("Player")]
-    GameObject _playerGO;
     [SerializeField] GameObject _playerPrefab;
     [SerializeField] float _jumpForce;
     [SerializeField] float _moveSpeed;
+    GameObject _playerGO;
 
     [Header("Score")]
-    GameObject _scoreGO;
     [SerializeField] Transform _scoreParent;
     [SerializeField] GameObject _scorePrefab;
+    GameObject _scoreGO;
 
     [Header("Life")]
-    GameObject _lifeGO;
     [SerializeField] Transform _lifeParent;
     [SerializeField] GameObject _lifePrefab;
     [SerializeField] int _life;
+    GameObject _lifeGO;
 
     [Header("Collectible")]
     [SerializeField] Transform _collectibleParent;
     [SerializeField] GameObject _collectiblePrefab;
     List<GameObject> _collectibles;
 
-    [SerializeField] CinemachineVirtualCamera _vcam;
+    [Header("Player win")]
+    [SerializeField] WinDoor _winDoor;
+    [SerializeField] GameObject _winUI;
 
+    [Header("Other")]
+    [SerializeField] CinemachineVirtualCamera _vcam;
     [SerializeField] GameObject _pauseUI;
+    [SerializeField] GameObject _gamepadUI;
     PlayerInput _playerInput;
     InputAction _pauseAction;
 
@@ -68,7 +73,7 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        _winDoor.OnPlayerWin += HandlePlayerWin;
         InitiatePlayerInput();
         InitiatePlayer();
         _vcam.Follow = _playerGO.transform;
@@ -83,20 +88,6 @@ public class GameController : MonoBehaviour
         _pauseAction.performed += OnPausePressed;
     }
 
-    public void OnPausePressed(InputAction.CallbackContext context)
-    {
-        if (_pauseUI.activeSelf)
-        {
-            _pauseUI.SetActive(false);
-            Time.timeScale = 1.0f;
-        }
-        else
-        {
-            _pauseUI.SetActive(true);
-            Time.timeScale = 0f;
-        }
-    }
-
     private void OnDisable()
     {
         _pauseAction.performed -= OnPausePressed;
@@ -108,9 +99,7 @@ public class GameController : MonoBehaviour
     {
         var playerInput = PlayerPrefs.GetString("PlayerInput", "MoveKeyboard");
         if (playerInput == "MoveKeyboard")
-        {
-            GameObject.Find("Gamepad").SetActive(false);
-        }
+           _gamepadUI.SetActive(false);
     }
 
     void InitiatePlayer()
@@ -170,9 +159,25 @@ public class GameController : MonoBehaviour
         _scoreGO.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(270, -45, 0);
     }
 
+    public void OnPausePressed(InputAction.CallbackContext context)
+    {
+        if (_pauseUI.activeSelf)
+            _pauseUI.SetActive(false);
+        else
+            _pauseUI.SetActive(true);
+    }
+
     public void HandleAddPoints(int points)
     {
         _scoreGO.GetComponent<Score>().UpdateScore(points);
+    }
+
+    public void HandlePlayerWin()
+    {
+        var score = _scoreGO.GetComponent<Score>().GetScore();
+        _scoreGO.SetActive(false);
+        _winUI.SetActive(true);
+        _winUI.GetComponent<WinUI>().SetScore(score);
     }
 
     public void HandleDestroyCollectible(Collectible collectible)
@@ -191,4 +196,5 @@ public class GameController : MonoBehaviour
             _playerGO.GetComponent<Player>().Killed();
         }
     }
+
 }

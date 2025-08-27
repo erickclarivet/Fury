@@ -11,17 +11,16 @@ public class Enemy : MonoBehaviour
 {
     Rigidbody2D _rb;
     LayerMask _groundLayer;
-    Transform _groundCheck;
 
     [SerializeField] float _moveSpeed;
     [SerializeField] float _groundRadius;
+    [SerializeField] Transform _groundCheck;
     [SerializeField] MovementDirection _direction = MovementDirection.Right;
 
     // Start is called before the first frame update
     void Start()
     {
         _groundLayer = LayerMask.GetMask("Ground");
-        _groundCheck = this.transform.Find("GroundCheck");
         _rb = GetComponent<Rigidbody2D>();
 
         // More fluid movement
@@ -57,7 +56,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.transform.CompareTag("Player"))
         {

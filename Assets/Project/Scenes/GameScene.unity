@@ -316,8 +316,11 @@ MonoBehaviour:
   _life: 3
   _collectibleParent: {fileID: 232108787}
   _collectiblePrefab: {fileID: 2540883070676235495, guid: b8b91a10635aef449a5a2bd8a251475b, type: 3}
+  _winDoor: {fileID: 1537109058}
+  _winUI: {fileID: 2005088177}
   _vcam: {fileID: 1711502748}
   _pauseUI: {fileID: 1374686598}
+  _gamepadUI: {fileID: 876242106}
 --- !u!4 &120500085
 Transform:
   m_ObjectHideFlags: 0
@@ -5817,7 +5820,7 @@ GameObject:
   - component: {fileID: 473798393}
   - component: {fileID: 473798392}
   m_Layer: 5
-  m_Name: SSOUI
+  m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7166,6 +7169,11 @@ MonoBehaviour:
   - {fileID: 989431969}
   _changeDirection: 0
   _speed: 2
+--- !u!4 &1054705959 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3253981521173689556, guid: 905f3414c07ec2b4783bca2e58ff62d2, type: 3}
+  m_PrefabInstance: {fileID: 4146532303666587442}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1118559452
 GameObject:
   m_ObjectHideFlags: 0
@@ -48447,6 +48455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ce861760c15c1842bb39178e6b96a18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _winScoreText: {fileID: 1294679106}
 --- !u!114 &2005088180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48671,6 +48680,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveSpeed: 2
   _groundRadius: 0.05
+  _groundCheck: {fileID: 1877515864}
   _direction: 0
 --- !u!1 &2090705421
 GameObject:
@@ -48837,6 +48847,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MovingEnemy
       objectReference: {fileID: 0}
+    - target: {fileID: 5983869447296873554, guid: 905f3414c07ec2b4783bca2e58ff62d2, type: 3}
+      propertyPath: _groundCheck
+      value: 
+      objectReference: {fileID: 1054705959}
     - target: {fileID: 9144352294832240687, guid: 905f3414c07ec2b4783bca2e58ff62d2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -48951,8 +48965,8 @@ SceneRoots:
   - {fileID: 1711502749}
   - {fileID: 120500085}
   - {fileID: 1734884151}
+  - {fileID: 906419935}
   - {fileID: 1264270174}
   - {fileID: 473798395}
   - {fileID: 1407656995}
-  - {fileID: 906419935}
   - {fileID: 232108787}

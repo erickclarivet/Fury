@@ -9,19 +9,18 @@ public class Player : MonoBehaviour
 {
     public event Action<int> OnTakeDamage;
 
+
+    [Header("Player settings")]
+    [SerializeField] float _jumpForce = 5.5f;
+    [SerializeField] float _moveSpeed = 5f;
     Rigidbody2D _rb;
     float _moveX;
     bool _isJumping;
     bool _isCrouching;
     bool _isGrounded;
-    LayerMask _groundLayer;
-    Transform _groundCheck;
-    Transform _ceillingCheck;
     bool _isAlive = true;
 
-    [SerializeField] float _jumpForce = 5.5f;
-    [SerializeField] float _moveSpeed = 5f;
-    [SerializeField] float _groundRadius = 0.08f;
+    [Header("Audio/Animator")]
     [SerializeField] AudioSource _audioSource;
     [SerializeField] AudioClip _jumpClip;
     [SerializeField] AudioClip _hitClip;
@@ -31,6 +30,12 @@ public class Player : MonoBehaviour
     PlayerInput _playerInput;
     private InputAction _moveAction;
     private InputAction _jumpAction;
+
+    [Header("LayerCheck")]
+    [SerializeField] float _groundRadius = 0.08f;
+    [SerializeField] Transform _groundCheck;
+    [SerializeField] Transform _ceillingCheck;
+    LayerMask _groundLayer;
 
     public void Initiate(Vector3 position, float jumpForce, float moveSpeed)
     {
@@ -52,8 +57,6 @@ public class Player : MonoBehaviour
     {
         _rb = this.GetComponent<Rigidbody2D>();
         _animator = this.GetComponent<Animator>();
-        _groundCheck = this.transform.Find("GroundCheck");
-        _ceillingCheck = this.transform.Find("CeillingCheck");
         _groundLayer = LayerMask.GetMask("Ground");
 
         // More fluid movement
@@ -71,23 +74,11 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Get action value
         Vector2 move = _moveAction.ReadValue<Vector2>();
         _isJumping = _jumpAction.IsPressed();
-        float x = move.x;
+        _moveX = move.x;
 
-        // Exemple de détection gauche/droite (seuil utile pour le stick)
-        const float dead = 0.2f;
-        bool left = x < -dead;
-        bool right = x > dead;
-        _moveX = x;
         var isCrouching = move.y < 0;
-
-
-        Debug.Log($"x:{move.x}|y:{move.y}");
-        //_moveX = Input.GetAxis("Horizontal");
-        //_isJumping = Input.GetKey(KeyCode.Space);
-        // var isCrouching = Input.GetKey(KeyCode.DownArrow);
         if (isCrouching || (!isCrouching && _isCrouching && IsTouchCeilling()))
         {
             _rb.transform.GetComponent<CircleCollider2D>().isTrigger = true;
@@ -159,9 +150,9 @@ public class Player : MonoBehaviour
     public IEnumerator BlinkRed()
     {
         _audioSource.PlayOneShot(_hitClip);
-        this.GetComponent<SpriteRenderer>().color = Color.red; // Set color to red
+        this.GetComponent<SpriteRenderer>().color = Color.red;
         yield return new WaitForSeconds(0.1f);
-        this.GetComponent<SpriteRenderer>().color = Color.white; // Reset color to white
+        this.GetComponent<SpriteRenderer>().color = Color.white;
     }
 
 
@@ -175,8 +166,8 @@ public class Player : MonoBehaviour
         _isAlive = false;
         Debug.Log("Player is dead!");
         _audioSource.PlayOneShot(_hitClip);
-        GetComponent<CapsuleCollider2D>().isTrigger = true; // Disable collision
-        this.GetComponent<SpriteRenderer>().color = Color.red; // Set color to red
+        GetComponent<CapsuleCollider2D>().isTrigger = true;
+        this.GetComponent<SpriteRenderer>().color = Color.red;
         yield return new WaitForSeconds(2f);
         SceneManager.LoadScene("GameScene");
     }

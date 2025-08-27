@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,7 +18,6 @@ public class Life : MonoBehaviour
         {
             GameObject newhHeart = Instantiate(_heartFullPrefab);
             newhHeart.transform.SetParent(this.transform);
-            //newhHeart.transform.localScale = new Vector3(30, 30, 0);
             newhHeart.transform.localScale = new Vector3(1, 1, 1);
             newhHeart.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(position.x + i * 35, position.y, position.z);
             _hearts.Add(newhHeart.transform);
@@ -38,7 +36,7 @@ public class Life : MonoBehaviour
         }
     }
 
-    public IEnumerator BlinkRed()
+    IEnumerator BlinkRed()
     {
         var spriteRenderer = _hearts[_life - 1].GetComponent<Image>();
         spriteRenderer.color = Color.red;

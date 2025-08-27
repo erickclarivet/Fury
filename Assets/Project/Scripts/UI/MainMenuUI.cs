@@ -1,9 +1,8 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class MainMenuUI : MonoBehaviour
 {
-    [SerializeField] GameObject _settingsMenuUI;
+    [SerializeField] GameObject _commandsMenuUI;
 
     public void Quit()
     {
@@ -13,11 +12,6 @@ public class MainMenuUI : MonoBehaviour
     public void Play()
     {
         gameObject.SetActive(false);
-        _settingsMenuUI.SetActive(true);
-    }
-
-    public void Settings()
-    {
-
+        _commandsMenuUI.SetActive(true);
     }
 }

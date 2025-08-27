@@ -10,10 +10,7 @@ public class Collectible : MonoBehaviour
 
     public event Action<int> OnAddPoints;
     public event Action<Collectible> OnDestroyCollectible;
-    public int GetPoints()
-    {
-        return _points;
-    }
+    public int GetPoints() => _points;
 
     void OnTriggerEnter2D(Collider2D collision)
     {
@@ -24,7 +21,7 @@ public class Collectible : MonoBehaviour
         }
     }
 
-    public IEnumerator LaunchSound()
+    IEnumerator LaunchSound()
     {
         _collectSource.PlayOneShot(_collectSound);
         GetComponent<SpriteRenderer>().enabled = false;

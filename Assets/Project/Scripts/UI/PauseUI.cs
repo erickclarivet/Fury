@@ -1,19 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
 
 public class PauseUI : MonoBehaviour
 {
-    private void Start()
+    void OnEnable()
     {
-        
+        Time.timeScale = 0f;
     }
+
+    void OnDisable()
+    {
+        Time.timeScale = 1f;
+    }
+
     public void Resume()
     {
         gameObject.SetActive(false);
-        Time.timeScale = 1f;
     }
 
     public void MainMenu()

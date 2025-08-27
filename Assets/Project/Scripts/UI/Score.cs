@@ -7,8 +7,9 @@ public class Score : MonoBehaviour
 {
     TextMeshProUGUI _scoreText;
     int _score = 0;
-    
-    // Start is called before the first frame update
+    public int GetScore() => _score;
+
+
     void Start()
     {
         _scoreText = GetComponent<TextMeshProUGUI>();
@@ -18,10 +19,5 @@ public class Score : MonoBehaviour
     {
         _score += score;
         _scoreText.text = $"Score : {_score}";
-    }
-
-    public int GetScore()
-    {
-        return _score;
     }
 }
